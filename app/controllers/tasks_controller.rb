@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  
   def index
     @tasks = current_user.tasks.order(created_at: :desc)
   end
@@ -13,6 +14,12 @@ class TasksController < ApplicationController
 
   def create
     @task = current_user.tasks.new(task_params)
+
+    if params[:back].present?
+       render :new
+       return
+    end
+
     if @task.save
       redirect_to @task, notice: "タスク「#{@task.name}」を登録しました！"
     else
@@ -23,18 +30,22 @@ class TasksController < ApplicationController
   def edit
   end
 
- def update
+  def update
     @task.update!(task_params)
     redirect_to tasks_url, notice: "タスク「#{@task.name}」を更新しました！"
- end
+  end
 
- def destroy
+  def destroy
     @task.destroy
     redirect_to tasks_url, notice: "タスク「#{@task.name}」を削除しました！"
- end
+  end
 
-  private
-    
+  def confirm_new
+    @task = current_user.tasks.new(task_params)
+    render :new unless @task.valid?     
+  end
+
+  private     
     def task_params
       params.require(:task).permit(:name, :description)
     end
