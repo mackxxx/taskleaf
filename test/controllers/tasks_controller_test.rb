@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class TasksControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
@@ -20,4 +20,5 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     get tasks_edit_url
     assert_response :success
   end
+
 end
