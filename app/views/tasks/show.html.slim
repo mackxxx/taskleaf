@@ -20,6 +20,9 @@ table.table.table-hover
       th = Task.human_attribute_name(:updated_at)
       td = @task.updated_at
     tr
+      th = Task.human_attribute_name(:image)
+      td = image_tag @task.image if @task.image.attached?
+    tr
 
   = link_to '編集', edit_task_path(@task), class: 'btn btn-primary mr-3'
   = link_to '削除', @task, method: :delete, data: {confirm: "タスク「#{@task.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
