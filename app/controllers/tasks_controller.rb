@@ -36,10 +36,7 @@ class TasksController < ApplicationController
 
     if @task.save
       TaskMailer.creation_email(@task).deliver_now
-      5.times do
-        SampleJob.set(wait: 5.seconds).perform_later
-        HighPriorityJob.set(wait: 5.seconds).perform_later
-      end
+      SampleJob.perform_later
       redirect_to @task, notice: "タスク「#{@task.name}」を登録しました。"
     else
       render :new
